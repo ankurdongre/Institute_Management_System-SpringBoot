@@ -12,5 +12,6 @@ public interface  ManagementRepoimpl {
     Teacher updateteachersingle(Teacher teacher);
     Boolean deleteteachersingle(int id);
     List<Teacher> selectteacherall();
+    List<Teacher> selectteacherstudentall();
     Boolean deleteteacherall();
 }

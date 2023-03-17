@@ -70,6 +70,7 @@ public class ManagementController {
     public List<Teacher> selectteacherstudentmultiple(@RequestParam List<Integer> ids){
         return service.selectteacherstudentmultiple(ids);
     }
+
     @RequestMapping("/UpdateTeacherSingle1")
     @ResponseBody
     public Teacher updateteachersingle(@RequestBody Teacher teacher){
@@ -94,6 +95,11 @@ public class ManagementController {
     @ResponseBody
     public List<Teacher> selectteacherall(){
         return service.selectteacherall();
+    }
+    @RequestMapping("/SelectTeacherStudentAll")
+    @ResponseBody
+    public List<Teacher> selectteacherstudentall(){
+        return service.selectteacherstudentall();
     }
     @RequestMapping("/DeleteTeacherAll1")
     @ResponseBody

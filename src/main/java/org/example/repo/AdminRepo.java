@@ -9,9 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Repository
@@ -49,7 +47,6 @@ public class AdminRepo implements AdminRepoimpl {
                             management.getTeacherList().get(i).getStudentList().get(j).getEmail() + "')");
                 }
             }
-
         }catch (Exception e){
             System.out.println(e);
         }
@@ -58,7 +55,7 @@ public class AdminRepo implements AdminRepoimpl {
     public Management selectmanagementsingle(int id){
         Management management = new Management();
         try {
-            String m1 = null;
+            String m1 = "";
             List<Teacher> teacherList = new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
@@ -77,8 +74,6 @@ public class AdminRepo implements AdminRepoimpl {
             for(int i = 0; i < m1Split.length ; i++){
                 tid.add(Integer.parseInt(m1Split[i]));
             }
-            List<Student> studentList = new ArrayList<>();
-            String s1 = null;
             for (int i = 0 ; i < tid.size();i++){
                 Teacher teacher = new Teacher();
                 ResultSet rs1 = st.executeQuery("select * from teacher where id = '"+tid.get(i)+"'");
@@ -86,43 +81,72 @@ public class AdminRepo implements AdminRepoimpl {
                     teacher.setId(rs1.getInt(1));
                     teacher.setName(rs1.getString(2));
                     teacher.setEmail(rs1.getString(3));
-                    s1 = rs1.getString(4);
-                    teacher.setStudentList(studentList);
+                    teacher.setStudentList(Method(rs1.getString(4)));
                 }
-
                 teacherList.add(teacher);
             }
-            List<Integer> sid = new ArrayList<>();
-            String[] s1Split = s1.split(",");
-            for (int j = 0; j < s1Split.length; j++) {
-                sid.add(Integer.parseInt(s1Split[j]));
-            }
-            for (int k = 0; k < sid.size(); k++) {
-                Student student = new Student();
-                    ResultSet rs2 = st.executeQuery("select * from student where roll_no = '" + sid.get(k) + "'");
-                    while (rs2.next()) {
-                        student.setRoll_no(rs2.getInt(1));
-                        student.setName(rs2.getString(2));
-                        student.setEmail(rs2.getString(3));
-                    }
-                studentList.add(student);
-                }
-
-
 
         }catch (Exception e){
             System.out.println(e);
         }
         return management;
     }
+    public List<Student> Method(String s1 ) {
+        List<Student> studentList = new ArrayList<>();
+        try {
+            List<Integer> integerList = new ArrayList<>();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, user, pass);
+            Statement st = con.createStatement();
+            String[] s1Split = s1.split(",");
+            for (int i = 0; i < s1Split.length; i++) {
+                integerList.add(Integer.parseInt(s1Split[i]));
+            }
+            for (int i = 0; i < integerList.size(); i++) {
+                Student student = new Student();
+                ResultSet rs1 = st.executeQuery("select * from student where roll_no = '" + integerList.get(i) + "'");
+                while (rs1.next()) {
+                    student.setRoll_no(rs1.getInt(1));
+                    student.setName(rs1.getString(2));
+                    student.setEmail(rs1.getString(3));
+                }
+                studentList.add(student);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return studentList;
+
+    }
     @Override
     public Management updatemanagementsingle(Management management){
         try {
+            Teacher teacher = new Teacher();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
             st.executeUpdate("update management set name = '"+management.getName()+"',email='"+
                     management.getEmail()+"' where id = '"+ management.getId()+"'");
+            ResultSet rs = st.executeQuery("select * from management where id = '"+management.getId()+"'");
+            String m1 = "";
+            while (rs.next()){
+                m1 = rs.getString(4);
+            }
+            String [] m1Split = m1.split(",");
+            for (int i = 0 ; i< m1Split.length;i++){
+                st.executeUpdate("update teacher set name = '"+management.getTeacherList().get(i).getName()+"',email='"+
+                        management.getTeacherList().get(i).getEmail()+"' where id = '"+ management.getTeacherList().get(i).getId()+"'");
+                ResultSet rs1 = st.executeQuery("select * from teacher where id = '"+teacher.getId()+"'");
+            String s1 = "";
+            while (rs1.next()){
+                s1 = (rs1.getString(4));
+            }
+            String [] s1Split = s1.split(",");
+            for (int j = 0 ; j< s1Split.length;j++){
+                st.executeUpdate("update student set name = '"+management.getTeacherList().get(i).getStudentList().get(j).getName()+"',email='"+
+                        management.getTeacherList().get(i).getStudentList().get(j).getEmail()+"' where roll_no = '"+ management.getTeacherList().get(i).getStudentList().get(j).getRoll_no()+"'");
+            }
+            }
             selectmanagementsingle(management.getId());
         }catch (Exception e){
             System.out.println(e);
@@ -149,22 +173,27 @@ public class AdminRepo implements AdminRepoimpl {
     public List<Management> selectmanagementall(){
         List<Management> managementList = new ArrayList<>();
         try {
+            List<Integer> integerList = new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from management");
             while (rs.next()){
-                Management mt = new Management();
-                mt.setId(rs.getInt(1));
-                mt.setName(rs.getString(2));
-                mt.setEmail(rs.getString(3));
-                managementList.add(mt);
+                integerList.add(rs.getInt(1));
             }
+            for (int i = 0;i<integerList.size();i++){
+                Management m1 =selectmanagementsingle(integerList.get(i));
+                managementList.add(m1);
+            }
+            return managementList;
         }catch (Exception e){
             System.out.println(e);
         }
         return managementList;
     }
+
+
+
     @Override
     public Boolean deletemanagementall(){
         Boolean result = false;
@@ -181,7 +210,4 @@ public class AdminRepo implements AdminRepoimpl {
         }
         return result;
     }
-
-
-
 }

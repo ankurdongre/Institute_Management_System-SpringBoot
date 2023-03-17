@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-public class AdminController {
+public class AdminController{
     @Autowired
     private AdminServiceimpl service;
 

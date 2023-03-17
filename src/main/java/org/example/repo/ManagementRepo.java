@@ -72,7 +72,7 @@ public class ManagementRepo implements ManagementRepoimpl {
     public Teacher selectteacherstudentsingle(int id){
         Teacher teacher = new Teacher();
         try {
-            String s1 = null;
+            String s1 = "";
             List<Student> studentList = new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
@@ -105,6 +105,30 @@ public class ManagementRepo implements ManagementRepoimpl {
         }
         return teacher;
     }
+    public List<Teacher> selectteacherstudentall(){
+        List<Teacher> teacherList = new ArrayList<>();
+        try {
+            List<Student> studentList = new ArrayList<>();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url,user,pass);
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from teacher");
+            List<Integer> integerList = new ArrayList<>();
+            while (rs.next()){
+                integerList.add(rs.getInt(1));
+            }
+            for (int i = 0;i<integerList.size();i++){
+                Teacher m1 = selectteachersingle(integerList.get(i));
+                teacherList.add(m1);
+            }
+            return teacherList;
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return teacherList;
+    }
+
     @Override
     public Teacher updateteachersingle(Teacher teacher){
         try {
@@ -113,6 +137,16 @@ public class ManagementRepo implements ManagementRepoimpl {
             Statement st = con.createStatement();
             st.executeUpdate("update teacher set name = '"+teacher.getName()+"',email='"+
                     teacher.getEmail()+"' where id = '"+ teacher.getId()+"'");
+            ResultSet rs = st.executeQuery("select * from teacher where id = '"+teacher.getId()+"'");
+            String s1 = "";
+            while (rs.next()){
+                s1 = (rs.getString(4));
+            }
+            String [] s1Split = s1.split(",");
+            for (int i = 0 ; i< s1Split.length;i++){
+                st.executeUpdate("update student set name = '"+teacher.getStudentList().get(i).getName()+"',email='"+
+                        teacher.getStudentList().get(i).getEmail()+"' where roll_no = '"+ teacher.getStudentList().get(i).getRoll_no()+"'");
+            }
             selectteachersingle(teacher.getId());
         }catch (Exception e){
             System.out.println(e);

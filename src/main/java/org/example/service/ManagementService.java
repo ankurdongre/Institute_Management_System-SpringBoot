@@ -58,6 +58,11 @@ public class ManagementService implements ManagementServiceimpl {
         return teacherList;
     }
     @Override
+    public List<Teacher> selectteacherstudentall(){
+        return repo.selectteacherstudentall();
+    }
+
+    @Override
     public Teacher updateteachersingle(Teacher teacher){
         return repo.updateteachersingle(teacher);
     }
