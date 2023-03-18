@@ -68,51 +68,27 @@ public class AdminController{
     public Boolean deletemanagementall(){
         return service.deletemanagementall();
     }
-
     @Autowired
     private ManagementServiceimpl service1;
-
-
     @RequestMapping("/InsertTeacherSingle")
     @ResponseBody
     public void insertteachersingle(@RequestBody Teacher teacher){
         service1.insertteachersingle(teacher);
-    }
-
-    @RequestMapping("/InsertTeacherStudentSingle")
-    @ResponseBody
-    public void insertteacherstudentsingle(@RequestBody Teacher teacher){
-        service1.insertteacherstudentsingle(teacher);
     }
     @RequestMapping("/InsertTeacherMultiple")
     @ResponseBody
     public void insertteachermultiple(@RequestBody List<Teacher> teacher){
         service1.insertteachermultiple(teacher);
     }
-    @RequestMapping("/InsertTeacherStudentMultiple")
-    @ResponseBody
-    public void insertteacherstudentmultiple(@RequestBody List<Teacher> teacher){
-        service1.insertteacherstudentmultiple(teacher);
-    }
     @RequestMapping("/SelectTeacherSingle")
     @ResponseBody
     public Teacher selectteachersingle(@RequestParam int id){
         return service1.selectteachersingle(id);
     }
-    @RequestMapping("/SelectTeacherStudentSingle")
-    @ResponseBody
-    public Teacher selectteacherstudentsingle(@RequestParam int id){
-        return service1.selectteacherstudentsingle(id);
-    }
     @RequestMapping("/SelectTeacherMultiple")
     @ResponseBody
     public List<Teacher> selectteachermultiple(@RequestParam List<Integer> ids){
         return service1.selectteachermultiple(ids);
-    }
-    @RequestMapping("/SelectTeacherStudentMultiple")
-    @ResponseBody
-    public List<Teacher> selectteacherstudentmultiple(@RequestParam List<Integer> ids){
-        return service1.selectteacherstudentmultiple(ids);
     }
     @RequestMapping("/UpdateTeacherSingle")
     @ResponseBody

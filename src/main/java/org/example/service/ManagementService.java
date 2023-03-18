@@ -15,30 +15,19 @@ public class ManagementService implements ManagementServiceimpl {
     public void insertteachersingle(Teacher teacher){
         repo.insertteachersingle(teacher);
     }
-    @Override
-    public void insertteacherstudentsingle(Teacher teacher){
-        repo.insertteacherstudentsingle(teacher);
-    }
+
     @Override
     public void insertteachermultiple(List<Teacher> teacher){
         for (int i = 0;i<teacher.size();i++){
             repo.insertteachersingle(teacher.get(i));
         }
     }
-    @Override
-    public void insertteacherstudentmultiple(List<Teacher> teacher){
-        for (int i = 0;i<teacher.size();i++){
-            repo.insertteacherstudentsingle(teacher.get(i));
-        }
-    }
+
     @Override
     public Teacher selectteachersingle(int id){
         return repo.selectteachersingle(id);
     }
-    @Override
-    public Teacher selectteacherstudentsingle(int id){
-        return repo.selectteacherstudentsingle(id);
-    }
+
     @Override
     public List<Teacher> selectteachermultiple(List<Integer> ids){
         List<Teacher> teacherList = new ArrayList<>();
@@ -47,19 +36,6 @@ public class ManagementService implements ManagementServiceimpl {
             teacherList.add(m1);
         }
         return teacherList;
-    }
-    @Override
-    public List<Teacher> selectteacherstudentmultiple(List<Integer> ids){
-        List<Teacher> teacherList = new ArrayList<>();
-        for (int i = 0;i<ids.size();i++){
-            Teacher m1 =repo.selectteacherstudentsingle(ids.get(i));
-            teacherList.add(m1);
-        }
-        return teacherList;
-    }
-    @Override
-    public List<Teacher> selectteacherstudentall(){
-        return repo.selectteacherstudentall();
     }
 
     @Override

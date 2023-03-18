@@ -1,7 +1,5 @@
 package org.example.repo.impl;
 import org.example.model.Management;
-import org.example.model.Teacher;
-
 import java.util.List;
 
 public interface AdminRepoimpl {

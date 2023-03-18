@@ -32,45 +32,21 @@ public class ManagementController {
     public void insertteachersingle(@RequestBody Teacher teacher){
         service.insertteachersingle(teacher);
     }
-
-    @RequestMapping("/InsertTeacherStudentSingle1")
-    @ResponseBody
-    public void insertteacherstudentsingle(@RequestBody Teacher teacher){
-        service.insertteacherstudentsingle(teacher);
-    }
     @RequestMapping("/InsertTeacherMultiple1")
     @ResponseBody
     public void insertteachermultiple(@RequestBody List<Teacher> teacher){
         service.insertteachermultiple(teacher);
     }
-
-    @RequestMapping("/InsertTeacherStudentMultiple1")
-    @ResponseBody
-    public void insertteacherstudentmultiple(@RequestBody List<Teacher> teacher){
-        service.insertteacherstudentmultiple(teacher);
-    }
-
     @RequestMapping("/SelectTeacherSingle1")
     @ResponseBody
     public Teacher selectteachersingle(@RequestParam int id){
         return service.selectteachersingle(id);
-    }
-    @RequestMapping("/SelectTeacherStudentSingle1")
-    @ResponseBody
-    public Teacher selectteacherstudentsingle(@RequestParam int id){
-        return service.selectteacherstudentsingle(id);
     }
     @RequestMapping("/SelectTeacherMultiple1")
     @ResponseBody
     public List<Teacher> selectteachermultiple(@RequestParam List<Integer> ids){
         return service.selectteachermultiple(ids);
     }
-    @RequestMapping("/SelectTeacherStudentMultiple1")
-    @ResponseBody
-    public List<Teacher> selectteacherstudentmultiple(@RequestParam List<Integer> ids){
-        return service.selectteacherstudentmultiple(ids);
-    }
-
     @RequestMapping("/UpdateTeacherSingle1")
     @ResponseBody
     public Teacher updateteachersingle(@RequestBody Teacher teacher){
@@ -95,11 +71,6 @@ public class ManagementController {
     @ResponseBody
     public List<Teacher> selectteacherall(){
         return service.selectteacherall();
-    }
-    @RequestMapping("/SelectTeacherStudentAll")
-    @ResponseBody
-    public List<Teacher> selectteacherstudentall(){
-        return service.selectteacherstudentall();
     }
     @RequestMapping("/DeleteTeacherAll1")
     @ResponseBody

@@ -21,18 +21,6 @@ public class ManagementRepo implements ManagementRepoimpl {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
-            st.executeUpdate("insert into teacher values ('"+teacher.getId()+"','"+teacher.getName()+"','"+teacher.getEmail()+"')");
-
-        }catch (Exception e){
-            System.out.println(e);
-        }
-    }
-    @Override
-    public void insertteacherstudentsingle(Teacher teacher){
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url,user,pass);
-            Statement st = con.createStatement();
             String idt = String.valueOf(teacher.getStudentList().get(0).getRoll_no());
             for(int i = 1 ; i < teacher.getStudentList().size();i++){
                 idt = idt + "," + teacher.getStudentList().get(i).getRoll_no();}
@@ -47,29 +35,9 @@ public class ManagementRepo implements ManagementRepoimpl {
             System.out.println(e);
         }
     }
+
     @Override
     public Teacher selectteachersingle(int id){
-        Teacher teacher = new Teacher();
-        try {
-            String s1 = null;
-            List<Student> studentList = new ArrayList<>();
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url,user,pass);
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from teacher where id = '"+id+"'");
-            while (rs.next()){
-                teacher.setId(rs.getInt(1));
-                teacher.setName(rs.getString(2));
-                teacher.setEmail(rs.getString(3));
-                teacher.setStudentList(studentList);
-            }
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return teacher;
-    }
-    @Override
-    public Teacher selectteacherstudentsingle(int id){
         Teacher teacher = new Teacher();
         try {
             String s1 = "";
@@ -105,29 +73,8 @@ public class ManagementRepo implements ManagementRepoimpl {
         }
         return teacher;
     }
-    public List<Teacher> selectteacherstudentall(){
-        List<Teacher> teacherList = new ArrayList<>();
-        try {
-            List<Student> studentList = new ArrayList<>();
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url,user,pass);
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("select * from teacher");
-            List<Integer> integerList = new ArrayList<>();
-            while (rs.next()){
-                integerList.add(rs.getInt(1));
-            }
-            for (int i = 0;i<integerList.size();i++){
-                Teacher m1 = selectteachersingle(integerList.get(i));
-                teacherList.add(m1);
-            }
-            return teacherList;
 
-        }catch (Exception e){
-            System.out.println(e);
-        }
-        return teacherList;
-    }
+
 
     @Override
     public Teacher updateteachersingle(Teacher teacher){
@@ -173,17 +120,21 @@ public class ManagementRepo implements ManagementRepoimpl {
     public List<Teacher> selectteacherall(){
         List<Teacher> teacherList = new ArrayList<>();
         try {
+            List<Student> studentList = new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("select * from teacher");
+            List<Integer> integerList = new ArrayList<>();
             while (rs.next()){
-                Teacher mt = new Teacher();
-                mt.setId(rs.getInt(1));
-                mt.setName(rs.getString(2));
-                mt.setEmail(rs.getString(3));
-                teacherList.add(mt);
+                integerList.add(rs.getInt(1));
             }
+            for (int i = 0;i<integerList.size();i++){
+                Teacher m1 = selectteachersingle(integerList.get(i));
+                teacherList.add(m1);
+            }
+            return teacherList;
+
         }catch (Exception e){
             System.out.println(e);
         }
