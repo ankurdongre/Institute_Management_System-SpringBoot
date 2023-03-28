@@ -65,7 +65,7 @@ public class TeacherRepo implements TeacherRepoimpl {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
-            int count = st.executeUpdate("delete from student where id = '"+roll_no +"'");
+            int count = st.executeUpdate("delete from student where roll_no = '"+roll_no +"'");
             if(count!=0){
                 result = true;
             }
@@ -74,6 +74,7 @@ public class TeacherRepo implements TeacherRepoimpl {
         }
         return result;
     }
+
     @Override
     public List<Student> selectstudentall(){
         List<Student> studentList = new ArrayList<>();

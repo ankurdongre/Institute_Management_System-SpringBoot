@@ -116,7 +116,6 @@ public class AdminRepo implements AdminRepoimpl {
             System.out.println(e);
         }
         return studentList;
-
     }
     @Override
     public Management updatemanagementsingle(Management management){
@@ -191,9 +190,6 @@ public class AdminRepo implements AdminRepoimpl {
         }
         return managementList;
     }
-
-
-
     @Override
     public Boolean deletemanagementall(){
         Boolean result = false;

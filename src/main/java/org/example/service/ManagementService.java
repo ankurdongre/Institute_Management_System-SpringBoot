@@ -15,19 +15,16 @@ public class ManagementService implements ManagementServiceimpl {
     public void insertteachersingle(Teacher teacher){
         repo.insertteachersingle(teacher);
     }
-
     @Override
     public void insertteachermultiple(List<Teacher> teacher){
         for (int i = 0;i<teacher.size();i++){
             repo.insertteachersingle(teacher.get(i));
         }
     }
-
     @Override
     public Teacher selectteachersingle(int id){
         return repo.selectteachersingle(id);
     }
-
     @Override
     public List<Teacher> selectteachermultiple(List<Integer> ids){
         List<Teacher> teacherList = new ArrayList<>();
@@ -37,7 +34,6 @@ public class ManagementService implements ManagementServiceimpl {
         }
         return teacherList;
     }
-
     @Override
     public Teacher updateteachersingle(Teacher teacher){
         return repo.updateteachersingle(teacher);
@@ -72,4 +68,9 @@ public class ManagementService implements ManagementServiceimpl {
     public Boolean deleteteacherall(){
         return repo.deleteteacherall();
     }
+    @Override
+    public Teacher assignteachersingle(Teacher teacher){
+        return repo.assignteachersingle(teacher);
+    }
+
 }

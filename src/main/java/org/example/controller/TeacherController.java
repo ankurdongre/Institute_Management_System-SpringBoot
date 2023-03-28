@@ -37,13 +37,13 @@ public class TeacherController {
     }
     @RequestMapping("/SelectStudentSingle2")
     @ResponseBody
-    public Student selectstudentsingle(@RequestParam int id){
-        return service2.selectstudentsingle(id);
+    public Student selectstudentsingle(@RequestParam int roll_no){
+        return service2.selectstudentsingle(roll_no);
     }
     @RequestMapping("/SelectStudentMultiple2")
     @ResponseBody
-    public List<Student> selectstudentmultiple(@RequestParam List<Integer> ids){
-        return service2.selectstudentmultiple(ids);
+    public List<Student> selectstudentmultiple(@RequestParam List<Integer> roll_nos){
+        return service2.selectstudentmultiple(roll_nos);
     }
     @RequestMapping("/UpdateStudentSingle2")
     @ResponseBody
@@ -57,13 +57,13 @@ public class TeacherController {
     }
     @RequestMapping("/DeleteStudentSingle2")
     @ResponseBody
-    public Boolean deletestudentsingle(@RequestParam int id){
-        return service2.deletestudentsingle(id);
+    public Boolean deletestudentsingle(@RequestParam int roll_no){
+        return service2.deletestudentsingle(roll_no);
     }
     @RequestMapping("/DeleteStudentMultiple2")
     @ResponseBody
-    public List<Boolean> deletestudentmultiple(@RequestParam List<Integer> ids){
-        return service2.deletestudentmultiple(ids);
+    public List<Boolean> deletestudentmultiple(@RequestParam List<Integer> roll_nos){
+        return service2.deletestudentmultiple(roll_nos);
     }
     @RequestMapping("/SelectStudentAll2")
     @ResponseBody

@@ -1,4 +1,5 @@
 package org.example.repo;
+import com.google.protobuf.StringValue;
 import org.example.model.Student;
 import org.example.model.Teacher;
 import org.example.repo.impl.ManagementRepoimpl;
@@ -21,21 +22,29 @@ public class ManagementRepo implements ManagementRepoimpl {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
-            String idt = String.valueOf(teacher.getStudentList().get(0).getRoll_no());
-            for(int i = 1 ; i < teacher.getStudentList().size();i++){
-                idt = idt + "," + teacher.getStudentList().get(i).getRoll_no();}
-            st.executeUpdate("insert into teacher values ('"+teacher.getId()+"','"+teacher.getName()+"','"+teacher.getEmail()+"','"+idt+"')");
-            for(int i = 0 ; i < teacher.getStudentList().size();i++) {
-                st.executeUpdate("insert into student values('"+
-                        teacher.getStudentList().get(i).getRoll_no()+"','"+
-                        teacher.getStudentList().get(i).getName()+"','"+
-                        teacher.getStudentList().get(i).getEmail()+"')");
-            }
+                if (teacher.getStudentList().get(0).getRoll_no() == 0) {
+                    st.executeUpdate("insert into teacher values ('" + teacher.getId() + "','" + teacher.getName() + "','" + teacher.getEmail() + "','')");
+                }
+                if (teacher.getStudentList().get(0).getRoll_no() != 0) {
+                    String idt = String.valueOf(teacher.getStudentList().get(0).getRoll_no());
+                    for (int i = 1; i < teacher.getStudentList().size(); i++) {
+                        idt = idt + "," + teacher.getStudentList().get(i).getRoll_no();
+                    }
+                    st.executeUpdate("insert into teacher values ('" + teacher.getId() + "','" + teacher.getName() + "','" + teacher.getEmail() + "','" + idt + "')");
+                    for (int i = 0; i < teacher.getStudentList().size(); i++) {
+                        st.executeUpdate("insert into student values('" +
+                                teacher.getStudentList().get(i).getRoll_no() + "','" +
+                                teacher.getStudentList().get(i).getName() + "','" +
+                                teacher.getStudentList().get(i).getEmail() + "')");
+                    }
+                }
+
+
+
         }catch (Exception e){
             System.out.println(e);
         }
     }
-
     @Override
     public Teacher selectteachersingle(int id){
         Teacher teacher = new Teacher();
@@ -73,9 +82,6 @@ public class ManagementRepo implements ManagementRepoimpl {
         }
         return teacher;
     }
-
-
-
     @Override
     public Teacher updateteachersingle(Teacher teacher){
         try {
@@ -104,10 +110,28 @@ public class ManagementRepo implements ManagementRepoimpl {
     public Boolean deleteteachersingle(int id){
         Boolean result = false;
         try {
+            List<Integer> ids =  new ArrayList<>();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(url,user,pass);
             Statement st = con.createStatement();
             int count = st.executeUpdate("delete from teacher where id = '"+id +"'");
+
+            String s1 = "";
+            ResultSet rs =  st.executeQuery("select * from teacher where id = '"+id+"'");
+            while (rs.next()){
+                s1 = rs.getString(4);
+            }
+            ResultSet rs1 =  st.executeQuery("select * from teacher");
+            while (rs1.next()){
+                ids.add(rs1.getInt(1));
+            }
+            if (ids.get(ids.size()-1) == id){
+                st.executeUpdate("update teacher set studentlist ='"+","+s1+"' where id = '"+ids.get(0) +"'");
+            }else{
+                st.executeUpdate("update teacher set studentlist ='"+","+s1+"' where id = '"+id+"'");
+            }
+
+
             if(count!=0){
                 result = true;
             }
@@ -116,6 +140,23 @@ public class ManagementRepo implements ManagementRepoimpl {
         }
         return result;
     }
+
+//    @Override
+//    public Boolean deleteteachersingle(int id){
+//        Boolean result = false;
+//        try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection con = DriverManager.getConnection(url,user,pass);
+//            Statement st = con.createStatement();
+//            int count = st.executeUpdate("delete from teacher where id = '"+id +"'");
+//            if(count!=0){
+//                result = true;
+//            }
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//        return result;
+//    }
     @Override
     public List<Teacher> selectteacherall(){
         List<Teacher> teacherList = new ArrayList<>();
@@ -155,5 +196,49 @@ public class ManagementRepo implements ManagementRepoimpl {
             System.out.println(e);
         }
         return result;
+    }
+
+    public Teacher assignteachersingle(Teacher teacher){
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url,user,pass);
+            Statement st = con.createStatement();
+            String s1 = "";
+            ResultSet rs = st.executeQuery("select * from teacher where id = '"+teacher.getId()+"'");
+            while (rs.next()){
+                    s1 = rs.getString(4);
+            }
+            for (int j = 0 ; j < teacher.getStudentList().size();j++) {
+                int count = 0;
+
+                String[] s1Split = s1.split(",");
+
+                for (int i = 0; i < s1Split.length; i++) {
+                    if (s1Split[i] != "") {
+                        if (teacher.getStudentList().get(j).getRoll_no() == Integer.parseInt(s1Split[i])) {
+                            st.executeUpdate("update student set name = '" + teacher.getStudentList().get(j).getName() + "',email= '" + teacher.getStudentList().get(j).getEmail() + "' where roll_no = '" + teacher.getStudentList().get(j).getRoll_no() + "'");
+                            break;
+                        }
+                        if (teacher.getStudentList().get(j).getRoll_no() != Integer.parseInt(s1Split[i])) {
+                            count = i + 1;
+                        }
+                    }
+                }
+
+                if (count == s1Split.length) {
+                        s1 = s1 + "," + teacher.getStudentList().get(j).getRoll_no();
+                        st.executeUpdate("update teacher set studentList = '" + s1 + "' where id = '" + teacher.getId() + "'");
+                        st.executeUpdate("update student set name = '" + teacher.getStudentList().get(j).getName() + "',email= '" + teacher.getStudentList().get(j).getEmail() + "' where roll_no = '" + teacher.getStudentList().get(j).getRoll_no() + "'");
+
+                }
+            }
+            selectteachersingle(teacher.getId());
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return teacher;
     }
 }

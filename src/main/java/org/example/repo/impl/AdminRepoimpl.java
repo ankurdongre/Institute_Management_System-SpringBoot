@@ -9,5 +9,4 @@ public interface AdminRepoimpl {
      Boolean deletemanagementsingle(int id);
      List<Management> selectmanagementall();
      Boolean deletemanagementall();
-
 }

@@ -15,4 +15,5 @@ public interface ManagementServiceimpl {
     List<Boolean> deleteteachermultiple(List<Integer> ids);
     List<Teacher> selectteacherall();
     Boolean deleteteacherall();
+    Teacher assignteachersingle(Teacher teacher);
 }

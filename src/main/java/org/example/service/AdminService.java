@@ -71,5 +71,4 @@ public class AdminService implements AdminServiceimpl {
     public Boolean deletemanagementall(){
         return repo.deletemanagementall();
     }
-
 }

@@ -115,14 +115,16 @@ public class AdminController{
     public List<Teacher> selectteacherall(){
         return service1.selectteacherall();
     }
-
-
     @RequestMapping("/DeleteTeacherAll")
     @ResponseBody
     public Boolean deleteteacherall(){
         return service1.deleteteacherall();
     }
-
+    @RequestMapping("/AssignTeacherSingle")
+    @ResponseBody
+    public Teacher assignteachersingle(@RequestBody Teacher teacher){
+        return service1.assignteachersingle(teacher);
+    }
 
     @Autowired
     private TeacherServiceimpl service2;
@@ -139,8 +141,8 @@ public class AdminController{
     }
     @RequestMapping("/SelectStudentSingle")
     @ResponseBody
-    public Student selectstudentsingle(@RequestParam int id){
-        return service2.selectstudentsingle(id);
+    public Student selectstudentsingle(@RequestParam int roll_no){
+        return service2.selectstudentsingle(roll_no);
     }
     @RequestMapping("/SelectStudentMultiple")
     @ResponseBody

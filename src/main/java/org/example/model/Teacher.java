@@ -6,7 +6,6 @@ public class Teacher {
     int id;
     String name,email;
     List<Student> studentList;
-
     public void setId(int id){
         this.id = id;
     }
